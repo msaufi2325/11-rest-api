@@ -14,13 +14,14 @@ func GenerateToken(email string, userId int64) (string, error) {
 		"exp":    time.Now().Add(time.Hour * 2).Unix(),
 	})
 
-	secretKey, _ := getEnv("JWT_SECRET_KEY")
+	// secretKey, _ := getEnv("JWT_SECRET_KEY")
+	secretKey := GetEnvVariable("JWT_SECRET_KEY")
 
 	return token.SignedString([]byte(secretKey))
 }
 
 func VerifyToken(token string) (int64, error) {
-	secretKey, _ := getEnv("JWT_SECRET_KEY")
+	secretKey := GetEnvVariable("JWT_SECRET_KEY")
 
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
